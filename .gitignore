@@ -1,5 +1,5 @@
 # Ignore the data, as we do not want to push this to github
-/SDHAR_data
+data/SDHAR_data/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
