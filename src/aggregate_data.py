@@ -4,15 +4,15 @@ import glob
 import os
 import numpy as np
 
-def load_data_and_activities(day_path):
+def load_data_and_activities(given_day_path):
     """
     Loads specified columns from CSV files and combines them into a single time-indexed DataFrame.
     The result will be a very sparse dataset.
     """
-    print(f"Searching for all data files in: {day_path}")
-    all_files = glob.glob(os.path.join(day_path, "*", "*.csv"))
+    print(f"Searching for all data files in: {given_day_path}")
+    all_files = glob.glob(os.path.join(given_day_path, "*", "*.csv"))
     if not all_files:
-        raise FileNotFoundError(f"No CSV files found in {day_path}.")
+        raise FileNotFoundError(f"No CSV files found in {given_day_path}.")
 
     # Defines which columns to load from files in each directory
     column_map = {
@@ -61,6 +61,15 @@ def load_data_and_activities(day_path):
 
         df["timestamp"] = pd.to_datetime(df[time_col_name], errors="coerce")
         df = df.dropna(subset=["timestamp"])
+
+        try:
+            # If the timestamp is already timezone-aware, convert it to UTC.
+            df["timestamp"] = df["timestamp"].dt.tz_convert('UTC')
+        except TypeError:
+            # If the timestamp is timezone-naive, assign the UTC timezone.
+            df["timestamp"] = df["timestamp"].dt.tz_localize('UTC')
+
+        df = df.drop_duplicates(subset=["timestamp"], keep='last')
         df = df.set_index("timestamp")
 
         if "activity_user" in file_name:
@@ -86,20 +95,13 @@ def load_data_and_activities(day_path):
     return master_df
 
 
-def densify_dataset(sparse_csv_path, output_csv_path):
+def densify_dataset(sparse_input_df):
     """
     Loads a sparse time-series dataset, makes it dense using a forward-fill
     strategy, and saves it to a new CSV file.
     """
-    try:
-        df = pd.read_csv(sparse_csv_path, index_col=0, parse_dates=True)
-    except FileNotFoundError:
-        print(
-            f"ERROR: The file was not found at '{sparse_csv_path}'. Please ensure the file is in the correct directory.")
-        return
-
     print("Applying forward-fill to make the dataset dense...")
-    df_dense = df.ffill()
+    df_dense = sparse_input_df.ffill()
 
     # Fill remaining NaNs in object/categorical columns with 'OFF'
     object_cols = df_dense.select_dtypes(include=['object']).columns
@@ -108,20 +110,15 @@ def densify_dataset(sparse_csv_path, output_csv_path):
     # Fill remaining NaNs in numeric columns with 0
     numeric_cols = df_dense.select_dtypes(include=['number']).columns
     df_dense[numeric_cols] = df_dense[numeric_cols].fillna(0)
-    df_dense.to_csv(output_csv_path)
 
     print(f"New dense dataset saved with {df_dense.shape[0]} rows and {df_dense.shape[1]} columns.")
+    return df_dense
 
-def rename_columns(input_csv_path, output_csv_path):
+def rename_columns(df):
     """
     Loads a dataset, renames columns based on a set of specific rules,
     and saves the result to a new CSV file.
     """
-    try:
-        df = pd.read_csv(input_csv_path, index_col=0, parse_dates=True)
-    except FileNotFoundError:
-        print(f"ERROR: The file was not found at '{input_csv_path}'. Please ensure the file exists.")
-        return
 
     print("Renaming columns based on specified rules...")
 
@@ -160,11 +157,11 @@ def rename_columns(input_csv_path, output_csv_path):
         new_column_names[col] = new_name
 
     df.rename(columns=new_column_names, inplace=True)
-    df.to_csv(output_csv_path)
     print("Columns successfully renamed.")
+    return df
 
 
-def encode_data(input_csv_path, output_csv_path):
+def encode_data(df):
     activity_map = {
         "BATHROOM ACTIVITY": 0, "CHORES": 1, "COOK": 2, "DISHWASHING": 3, "DRESS": 4,
         "EAT": 5, "LAUNDRY": 6, "MAKE SIMPLE FOOD": 7, "OUT HOME": 8, "PET": 9,
@@ -173,14 +170,8 @@ def encode_data(input_csv_path, output_csv_path):
     }
 
     vibration_map = {
-        'OFF': 0, 'vibration': 1, 'tile': 2, 'drop': 3
+        'OFF': 0, 'vibration': 1, 'tilt': 2, 'drop': 3
     }
-
-    try:
-        df = pd.read_csv(input_csv_path, index_col=0, parse_dates=True)
-    except FileNotFoundError:
-        print(f"ERROR: The file was not found at '{input_csv_path}'. Please ensure the file exists.")
-        return None
 
     print("Encoding the activities...")
 
@@ -213,7 +204,6 @@ def encode_data(input_csv_path, output_csv_path):
     df['sin_time'] = np.sin(2 * np.pi * seconds_since_midnight / seconds_in_a_day)
     df['cos_time'] = np.cos(2 * np.pi * seconds_since_midnight / seconds_in_a_day)
     df.reset_index(drop=True, inplace=True)
-    df.to_csv(output_csv_path, index=False)
 
     print("Encoding OFF/ON to binary...")
 
@@ -221,35 +211,40 @@ def encode_data(input_csv_path, output_csv_path):
     remaining_object_cols = df.select_dtypes(include=['object']).columns
     for col in remaining_object_cols:
         df[col] = df[col].map(binary_map)
-    df.to_csv(output_csv_path)
     return df
 
 if __name__ == "__main__":
     ROOT_DATA_DIR = "../data/SDHAR"
     SAVE_PATH = "../processed_data/"
-    DAY_NAME = "Day_1"
     TIME_WINDOW = "2s"
-    day_path = os.path.join(ROOT_DATA_DIR, DAY_NAME, DAY_NAME)
 
-    all_data_sparse_df = load_data_and_activities(day_path)
+    if not os.path.exists(SAVE_PATH): os.makedirs(SAVE_PATH)
 
-    resampled_sparse_df = all_data_sparse_df.resample(TIME_WINDOW).last()
+    all_days_dirs = sorted(
+        glob.glob(os.path.join(ROOT_DATA_DIR, 'Day_*')),
+        key= lambda path: int(os.path.basename(path).split('_')[1])
+    )
+    all_processed_dfs = []
 
-    if not os.path.exists(SAVE_PATH):
-        os.makedirs(SAVE_PATH)
+    for day_dir in all_days_dirs:
+        day_name = os.path.basename(day_dir)
+        day_path = os.path.join(day_dir, day_name)
 
-    SPARSE_CSV_PATH = os.path.join(SAVE_PATH, f"sparse_data_{DAY_NAME}.csv")
-    resampled_sparse_df.to_csv(SPARSE_CSV_PATH)
+        sparse_df = load_data_and_activities(day_path)
 
+        if sparse_df is None:
+            print(f"No data found for '{day_dir}'.")
+            continue
 
-    DENSE_CSV_PATH = os.path.join(SAVE_PATH, f"dense_data_{DAY_NAME}.csv")
-    densify_dataset(SPARSE_CSV_PATH, DENSE_CSV_PATH)
+        resampled_sparse_df = sparse_df.resample(TIME_WINDOW).last()
+        densified_df = densify_dataset(resampled_sparse_df)
+        renamed_df = rename_columns(densified_df)
+        day_csv = encode_data(renamed_df)
+        all_processed_dfs.append(day_csv)
 
-    RENAMED_COLUMNS_PATH = os.path.join(SAVE_PATH, f"renamed_columns_{DAY_NAME}.csv")
-    rename_columns(DENSE_CSV_PATH, RENAMED_COLUMNS_PATH)
-
-    ENCODED_DATA_PATH = os.path.join(SAVE_PATH, f"encoded_data_{DAY_NAME}.csv")
-    unified_csv = encode_data(RENAMED_COLUMNS_PATH, ENCODED_DATA_PATH)
+    final_df = pd.concat(all_processed_dfs)
+    output_path = os.path.join(SAVE_PATH, "final_processed_data_ALL_DAYS.csv")
+    final_df.to_csv(output_path, index=False)
 
 
 
