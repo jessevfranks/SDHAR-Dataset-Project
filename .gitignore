@@ -3,6 +3,11 @@ data/SDHAR
 processed_data/SDHAR
 models/SDHAR
 
+# accept a gitkeep so that the folder still shows up
+!data/SDHAR/.gitkeep
+!processed_data/SDHAR/.gitkeep
+!models/SDHAR/.gitkeep
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
