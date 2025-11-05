@@ -249,7 +249,7 @@ def normalize_data(df):
 
 if __name__ == "__main__":
     ROOT_DATA_DIR = "../data/SDHAR"
-    SAVE_PATH = "../processed_data/"
+    SAVE_PATH = "../processed_data/SDHAR"
     TIME_WINDOW = "2s"
 
     if not os.path.exists(SAVE_PATH): os.makedirs(SAVE_PATH)

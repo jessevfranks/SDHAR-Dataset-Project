@@ -1,6 +1,7 @@
 # Ignore the data, as we do not want to push this to github
-data/*
-processed_data/*
+data/SDHAR
+processed_data/SDHAR
+modles/SDHAR
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
