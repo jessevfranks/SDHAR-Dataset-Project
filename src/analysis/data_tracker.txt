@@ -130,7 +130,7 @@ BATHROOM ACTIVITY       0.94      0.92      0.93       381
 
 
 
-
+Normalized DT:
 Test Accuracy: 95.91%
 
 Classification Report:
@@ -189,3 +189,93 @@ Classification Report:
     accuracy                           0.93     13494
    macro avg       0.62      0.62      0.61     13494
 weighted avg       0.93      0.93      0.93     13494
+
+
+
+Sampled-Adjusted RF:
+Test Accuracy: 97.88%
+
+Classification Report (Random Forest with SMOTE):
+                   precision    recall  f1-score   support
+
+BATHROOM ACTIVITY       0.94      0.94      0.94       400
+           CHORES       0.94      0.85      0.89        74
+             COOK       0.89      0.95      0.92       134
+      DISHWASHING       0.85      0.94      0.89        18
+            DRESS       0.65      0.62      0.63        32
+              EAT       0.94      0.96      0.95       641
+          LAUNDRY       1.00      1.00      1.00         2
+ MAKE SIMPLE FOOD       0.84      0.85      0.85        89
+         OUT HOME       1.00      0.99      1.00      5253
+              PET       0.75      0.56      0.64        16
+             READ       0.86      0.99      0.92       176
+            RELAX       0.88      0.95      0.91       152
+           SHOWER       0.95      0.98      0.97        85
+            SLEEP       1.00      0.99      1.00      4270
+        TAKE MEDS       0.75      0.86      0.80         7
+         WATCH TV       0.99      0.98      0.98      1094
+             WORK       0.97      0.99      0.98       332
+            OTHER       0.88      0.89      0.88       719
+
+         accuracy                           0.98     13494
+        macro avg       0.89      0.91      0.90     13494
+     weighted avg       0.98      0.98      0.98     13494
+
+Sample Adjusted DT:
+Test Accuracy: 94.66%
+
+Classification Report (Decision Tree with SMOTE):
+                   precision    recall  f1-score   support
+
+BATHROOM ACTIVITY       0.87      0.87      0.87       400
+           CHORES       0.73      0.61      0.66        74
+             COOK       0.71      0.82      0.76       134
+      DISHWASHING       0.68      0.83      0.75        18
+            DRESS       0.30      0.34      0.32        32
+              EAT       0.88      0.87      0.87       641
+          LAUNDRY       0.50      1.00      0.67         2
+ MAKE SIMPLE FOOD       0.50      0.58      0.54        89
+         OUT HOME       1.00      0.98      0.99      5253
+              PET       0.27      0.44      0.33        16
+             READ       0.86      0.91      0.88       176
+            RELAX       0.79      0.76      0.78       152
+           SHOWER       0.84      0.95      0.90        85
+            SLEEP       0.99      0.98      0.99      4270
+        TAKE MEDS       0.50      0.71      0.59         7
+         WATCH TV       0.94      0.96      0.95      1094
+             WORK       0.91      0.95      0.93       332
+            OTHER       0.74      0.76      0.75       719
+
+         accuracy                           0.95     13494
+        macro avg       0.72      0.80      0.75     13494
+     weighted avg       0.95      0.95      0.95     13494
+
+
+Sample Adjusted LSTM
+Test Accuracy: 90.08%
+
+Classification Report (LSTM with SMOTE):
+                   precision    recall  f1-score   support
+
+BATHROOM ACTIVITY       0.84      0.90      0.87       400
+           CHORES       0.43      0.92      0.59        74
+             COOK       0.64      0.66      0.65       134
+      DISHWASHING       0.57      0.94      0.71        18
+            DRESS       0.15      0.59      0.24        32
+              EAT       0.73      0.78      0.76       641
+          LAUNDRY       0.17      1.00      0.29         2
+ MAKE SIMPLE FOOD       0.41      0.85      0.56        89
+         OUT HOME       0.98      0.99      0.99      5253
+              PET       0.25      0.50      0.33        16
+             READ       0.77      0.89      0.82       176
+            RELAX       0.45      0.81      0.58       152
+           SHOWER       0.72      0.98      0.83        85
+            SLEEP       0.96      0.98      0.97      4270
+        TAKE MEDS       0.24      0.86      0.38         7
+         WATCH TV       0.90      0.90      0.90      1094
+             WORK       0.81      0.77      0.79       332
+            OTHER       0.00      0.00      0.00       719
+
+         accuracy                           0.90     13494
+        macro avg       0.56      0.80      0.62     13494
+     weighted avg       0.87      0.90      0.88     13494
