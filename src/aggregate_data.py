@@ -3,6 +3,8 @@ import re
 import glob
 import os
 import numpy as np
+from sklearn.preprocessing import MinMaxScaler
+
 
 def load_data_and_activities(given_day_path):
     """
@@ -213,6 +215,38 @@ def encode_data(df):
         df[col] = df[col].map(binary_map)
     return df
 
+def normalize_data(df):
+    """
+        Applies Min-Max scaling to the continuous sensor columns.
+        Ignores binary, encoded categorical, and target columns.
+    """
+    print("Normalizing continuous sensor data...")
+
+    cols_to_normalize = []
+
+    # Prefixes for: illuminance, power, humidity, temperature
+    continuous_prefixes = ['l', 'p', 'h', 't']
+
+    for col in df.columns:
+        if col[0] in continuous_prefixes and col[1:].isdigit():
+            cols_to_normalize.append(col)
+        # Check for user*_distance columns
+        elif 'user' in col and 'distance' in col:
+            cols_to_normalize.append(col)
+
+    if not cols_to_normalize:
+        return df
+
+    # Initialize the scaler
+    scaler = MinMaxScaler(feature_range=(0, 1))
+
+    # Fit the scaler AND transform the data in one step
+    # This modifies the DataFrame in place
+    df[cols_to_normalize] = scaler.fit_transform(df[cols_to_normalize])
+
+    print("Normalization complete.")
+    return df
+
 if __name__ == "__main__":
     ROOT_DATA_DIR = "../data/SDHAR"
     SAVE_PATH = "../processed_data/"
@@ -242,10 +276,8 @@ if __name__ == "__main__":
         day_csv = encode_data(renamed_df)
         all_processed_dfs.append(day_csv)
 
-    final_df = pd.concat(all_processed_dfs)
+    unnormalized_final_df = pd.concat(all_processed_dfs)
+    final_df = normalize_data(unnormalized_final_df)
+
     output_path = os.path.join(SAVE_PATH, "final_processed_data_ALL_DAYS.csv")
     final_df.to_csv(output_path, index=False)
-
-
-
-
