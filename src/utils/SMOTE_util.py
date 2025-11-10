@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 from tensorflow.keras.utils import to_categorical
 from imblearn.over_sampling import SMOTE
 from collections import Counter
-from create_window_util import create_windows
+from src.utils.create_window_util import create_windows
 
 FILE_PATH = "../processed_data/SDHAR/final_processed_data_ALL_DAYS.csv"
 TARGET_COLUMN = 'activity_user_1'
