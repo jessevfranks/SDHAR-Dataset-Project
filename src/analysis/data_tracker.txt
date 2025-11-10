@@ -221,6 +221,10 @@ BATHROOM ACTIVITY       0.94      0.94      0.94       400
         macro avg       0.89      0.91      0.90     13494
      weighted avg       0.98      0.98      0.98     13494
 
+
+
+
+
 Sample Adjusted DT:
 Test Accuracy: 94.66%
 
@@ -249,6 +253,9 @@ BATHROOM ACTIVITY       0.87      0.87      0.87       400
          accuracy                           0.95     13494
         macro avg       0.72      0.80      0.75     13494
      weighted avg       0.95      0.95      0.95     13494
+
+
+
 
 
 Sample Adjusted LSTM
