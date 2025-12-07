@@ -9,15 +9,15 @@ from imblearn.over_sampling import SMOTE
 from collections import Counter
 from src.utils.create_window_util import create_windows
 
-FILE_PATH = "../processed_data/SDHAR/final_processed_data_ALL_DAYS.csv"
+FILE_PATH = "../../processed_data/SDHAR/final_processed_data_ALL_DAYS_small_window.csv"
 TARGET_COLUMN = 'activity_user_1'
 WINDOW_SIZE = 60
 STEP_SIZE = 30
 TEST_SIZE = 0.2
 RANDOM_STATE = 42
-SAVE_PATH = "../processed_data/SDHAR/"
-LSTM_DATA_FILE = os.path.join(SAVE_PATH, "lstm_smote_data.npz")
-TREE_DATA_FILE = os.path.join(SAVE_PATH, "tree_smote_data.npz")
+SAVE_PATH = "../../processed_data/SDHAR/"
+LSTM_DATA_FILE = os.path.join(SAVE_PATH, "lstm_small_window_smote_data.npz")
+TREE_DATA_FILE = os.path.join(SAVE_PATH, "tree_small_window_smote_data.npz")
 
 def _load_and_split_data():
     print("Loading final processed data...")
