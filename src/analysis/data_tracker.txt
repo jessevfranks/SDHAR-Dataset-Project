@@ -496,3 +496,94 @@ BATHROOM ACTIVITY       0.91      0.90      0.91       801
          accuracy                           0.96     26987
         macro avg       0.80      0.83      0.81     26987
      weighted avg       0.96      0.96      0.96     26987
+
+
+
+Small Window LSTM with band data (not reweighted)
+Test Accuracy: 79.10%
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.54      0.67      0.60       795
+           1       0.41      0.12      0.18       151
+           2       0.61      0.11      0.19       265
+           3       0.67      0.13      0.22        31
+           4       0.00      0.00      0.00        67
+           5       0.58      0.09      0.15      1257
+           6       0.00      0.00      0.00         5
+           7       0.31      0.02      0.05       164
+           8       0.92      0.94      0.93     10467
+           9       0.00      0.00      0.00        35
+          10       0.59      0.19      0.28       343
+          11       0.00      0.00      0.00       322
+          12       0.63      0.73      0.68       168
+          13       0.98      0.94      0.96      8654
+          14       0.00      0.00      0.00         9
+          15       0.41      0.82      0.54      2187
+          16       0.43      0.18      0.25       666
+          17       0.35      0.40      0.37      1401
+
+    accuracy                           0.79     26987
+   macro avg       0.41      0.30      0.30     26987
+weighted avg       0.80      0.79      0.77     26987
+
+
+Small Window RF with band data (not reweighted)
+Test Accuracy: 98.77%
+
+Classification Report:
+                   precision    recall  f1-score   support
+
+BATHROOM ACTIVITY       0.94      0.95      0.95       795
+           CHORES       0.98      0.91      0.94       151
+             COOK       0.97      0.97      0.97       265
+      DISHWASHING       0.91      0.97      0.94        31
+            DRESS       0.85      0.67      0.75        67
+              EAT       0.96      0.99      0.97      1257
+          LAUNDRY       1.00      0.60      0.75         5
+ MAKE SIMPLE FOOD       0.94      0.80      0.86       164
+         OUT HOME       1.00      1.00      1.00     10467
+              PET       0.73      0.31      0.44        35
+             READ       0.96      0.98      0.97       343
+            RELAX       0.96      0.97      0.97       322
+           SHOWER       0.95      0.98      0.96       168
+            SLEEP       1.00      1.00      1.00      8654
+        TAKE MEDS       0.62      0.89      0.73         9
+         WATCH TV       0.99      0.99      0.99      2187
+             WORK       0.99      0.98      0.98       666
+            OTHER       0.93      0.93      0.93      1401
+
+         accuracy                           0.99     26987
+        macro avg       0.93      0.88      0.89     26987
+     weighted avg       0.99      0.99      0.99     26987
+
+
+Small Window DT with band data (not reweighted)
+Test Accuracy: 97.47%
+
+Classification Report:
+                   precision    recall  f1-score   support
+
+BATHROOM ACTIVITY       0.94      0.93      0.93       795
+           CHORES       0.85      0.82      0.84       151
+             COOK       0.90      0.89      0.89       265
+      DISHWASHING       0.78      0.90      0.84        31
+            DRESS       0.60      0.60      0.60        67
+              EAT       0.93      0.94      0.93      1257
+          LAUNDRY       0.67      0.40      0.50         5
+ MAKE SIMPLE FOOD       0.70      0.74      0.72       164
+         OUT HOME       1.00      1.00      1.00     10467
+              PET       0.51      0.51      0.51        35
+             READ       0.94      0.93      0.94       343
+            RELAX       0.93      0.92      0.93       322
+           SHOWER       0.94      0.96      0.95       168
+            SLEEP       1.00      1.00      1.00      8654
+        TAKE MEDS       0.62      0.89      0.73         9
+         WATCH TV       0.97      0.97      0.97      2187
+             WORK       0.96      0.95      0.96       666
+            OTHER       0.88      0.86      0.87      1401
+
+         accuracy                           0.97     26987
+        macro avg       0.84      0.84      0.84     26987
+     weighted avg       0.97      0.97      0.97     26987
