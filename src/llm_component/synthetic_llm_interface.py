@@ -1,4 +1,3 @@
-# synthetic_llm_interface.py
 """
 Interactive LLM-driven synthetic data tester for SDHAR models.
 UPDATED VERSION:
@@ -22,8 +21,6 @@ from tensorflow.keras.models import load_model
 
 from openai import OpenAI, OpenAIError
 
-
-# -------------------------- CONFIG --------------------------------------
 
 # Path to your processed SDHAR data
 PROCESSED_DATA_CSV = "../../processed_data/SDHAR/final_processed_data_ALL_DAYS.csv"
@@ -85,9 +82,6 @@ MODEL_CONFIG = {
 }
 
 LLM_MODEL = "gpt-4o"
-
-
-# ----------------------- DATA & SYNTHETIC BUILDER ------------------------
 
 
 def build_activity_segments(df: pd.DataFrame, label_col: str) -> dict:
@@ -552,20 +546,15 @@ def main():
 
     df_source = pd.read_csv(PROCESSED_DATA_CSV)
     segments_by_label = build_activity_segments(df_source, LABEL_COL)
-    
-    # 3. FIT SCALER (Fix for Normalization Issue)
-    # We fit the scaler on the ENTIRE source dataset once.
-    # When testing normalized models, we apply this global scaler to the synthetic slices.
+
     print("[INFO] Fitting global scaler for normalized models...")
     scaler = fit_scaler_for_normalized_models(df_source)
 
-    # 4. LOAD MODELS
     print("[INFO] Loading models...")
     models = load_all_models()
     print("[INFO] Models loaded:", list(models.keys()))
     print()
 
-    # 5. LOOP
     while True:
         print("-" * 80)
         print("Supported Activities:")
