@@ -587,3 +587,33 @@ BATHROOM ACTIVITY       0.94      0.93      0.93       795
          accuracy                           0.97     26987
         macro avg       0.84      0.84      0.84     26987
      weighted avg       0.97      0.97      0.97     26987
+
+
+Small window RF with band data (reweighted)
+Test Accuracy: 98.33%
+
+Classification Report (Random Forest with SMOTE):
+                   precision    recall  f1-score   support
+
+BATHROOM ACTIVITY       0.93      0.95      0.94       801
+           CHORES       0.98      0.87      0.92       149
+             COOK       0.95      0.96      0.95       269
+      DISHWASHING       0.90      0.97      0.93        36
+            DRESS       0.72      0.60      0.66        65
+              EAT       0.96      0.98      0.97      1284
+          LAUNDRY       1.00      0.60      0.75         5
+ MAKE SIMPLE FOOD       0.86      0.90      0.88       177
+         OUT HOME       1.00      0.99      1.00     10504
+              PET       0.53      0.53      0.53        30
+             READ       0.92      0.99      0.95       350
+            RELAX       0.95      0.96      0.96       303
+           SHOWER       0.98      0.99      0.98       170
+            SLEEP       1.00      0.99      1.00      8539
+        TAKE MEDS       0.79      0.73      0.76        15
+         WATCH TV       0.99      0.99      0.99      2189
+             WORK       0.97      0.99      0.98       663
+            OTHER       0.90      0.93      0.91      1438
+
+         accuracy                           0.98     26987
+        macro avg       0.91      0.88      0.89     26987
+     weighted avg       0.98      0.98      0.98     26987

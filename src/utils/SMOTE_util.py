@@ -17,7 +17,7 @@ TEST_SIZE = 0.2
 RANDOM_STATE = 42
 SAVE_PATH = "../../processed_data/SDHAR/"
 LSTM_DATA_FILE = os.path.join(SAVE_PATH, "lstm_small_window_smote_data.npz")
-TREE_DATA_FILE = os.path.join(SAVE_PATH, "tree_small_window_smote_data.npz")
+TREE_DATA_FILE = os.path.join(SAVE_PATH, "tree_small_window_smote_band_data.npz")
 
 def _load_and_split_data():
     print("Loading final processed data...")
@@ -134,7 +134,7 @@ if __name__ == "__main__":
         os.makedirs(SAVE_PATH)
         print(f"Created directory: {SAVE_PATH}")
 
-    process_and_save_lstm_data()
+    #process_and_save_lstm_data()
     process_and_save_tree_data()
 
     print(f"\nAll processing complete. Files saved in {SAVE_PATH}")
